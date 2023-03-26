@@ -1,26 +1,23 @@
-from django.db.models import Avg
-from django_filters.rest_framework import DjangoFilterBackend
-from django.shortcuts import get_object_or_404
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import action
+from django.db.models import Avg
+from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import permissions, status, viewsets
-from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.filters import SearchFilter
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import AccessToken
+from reviews.models import Category, Genre, Review, Title, User
 
-from reviews.models import User, Genre, Category, Title, Review
-from .permissions import (AdminOnly, IsAdminUserOrReadOnly,
-                          AllPermission)
-from .serializers import (UsersSerializer,
-                          GetTokenSerializer, SignUpSerializer,
-                          TitleSerializer, CategorySerializer,
-                          GenreSerializer, ReadOnlyTitleSerializer,
-                          ReviewSerializer, CommentSerializer)
-from .mixins import ListCreateDestroyViewSet
 from .filters import TitlesFilter
+from .mixins import ListCreateDestroyViewSet
+from .permissions import AdminOnly, AllPermission, IsAdminUserOrReadOnly
+from .serializers import (CategorySerializer, CommentSerializer,
+                          GenreSerializer, GetTokenSerializer,
+                          ReadOnlyTitleSerializer, ReviewSerializer,
+                          SignUpSerializer, TitleSerializer, UsersSerializer)
 
 
 @api_view(['POST'])
