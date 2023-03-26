@@ -23,18 +23,18 @@ from .serializers import (CategorySerializer, CommentSerializer,
 @api_view(['POST'])
 @permission_classes([permissions.AllowAny, ])
 def sign_up(request):
-    if request.method == 'POST':
-        serializer = SignUpSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user, _ = User.objects.get_or_create(**serializer.validated_data)
-        confirmation_code = default_token_generator.make_token(user)
-        send_mail(
-            subject='Код доступа',
-            message=f'Код доступа {confirmation_code}',
-            from_email='from@example.com',
-            recipient_list=[user.email],
-            fail_silently=False)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    serializer = SignUpSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    user, _ = User.objects.get_or_create(**serializer.validated_data)
+    confirmation_code = default_token_generator.make_token(user)
+    send_mail(
+        subject="Код доступа",
+        message=f"Код доступа {confirmation_code}",
+        from_email="from@example.com",
+        recipient_list=[user.email],
+        fail_silently=False,
+    )
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
